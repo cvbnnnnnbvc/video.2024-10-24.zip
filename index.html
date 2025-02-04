@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="cn">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plyr 网页播放器示例</title>
+    <!-- 引入 Plyr 样式表 -->
+    <link rel="stylesheet" href="plyr.css" />
+    <link rel="stylesheet" href="demo.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .box {
+        display: flex;            /* 设置为 flex 容器 */
+        flex-direction: column;   /* 垂直排列 */
+        align-items: center;      /* 水平居中 */
+        padding: 0 20px;
+        padding-top: 30px;
+        flex-grow: 1;             /* 使其占据剩余空间 */
+        text-align: center;       /* 文字居中 */
+      }
+      .player-container {
+        max-width: 800px;
+        width: 100%;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .plyr {
+        border-radius: 10px;
+      }
+      /* 隐藏音量按钮 */
+      .plyr__volume {
+        display: none !important;
+      }
+    
+      /* 将 aside 固定在底部 */
+      aside {
+        position: fixed;
+        bottom: 0;  /* 固定底部 */
+        left: 0;
+        right: 0;
+        background-color: rgba(255, 255, 255, 0.8);  /* 半透明背景 */
+        padding: 10px;
+        text-align: center;
+        z-index: 1000;  /* 层级 */
+      }
+    
+      #shareBtn {
+        color: rgb(0, 140, 255);
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    </style>
+    
+  </head>
+  <body>
+    <div class="box">
+      <h1 style="font-size: 36px; font-weight: bold; font-family: 'Playfair Display', serif;
+">YT-CN 简中油管</h1>
+      <p>
+        简中油管（YT-CN） 是为应对
+        <button type="button" class="link" data-source="audio">
+          <svg class="icon">
+            <title>HTML5</title>
+            <path
+              d="M15.8,4.8c-0.2-1.3-0.8-2.2-2.2-2.4C11.4,2,8,2,8,2S4.6,2,2.4,2.4C1,2.6,0.3,3.5,0.2,4.8C0,6.1,0,8,0,8
+                 s0,1.9,0.2,3.2c0.2,1.3,0.8,2.2,2.2,2.4C4.6,14,8,14,8,14s3.4,0,5.6-0.4c1.4-0.3,2-1.1,2.2-2.4C16,9.9,16,8,16,8S16,6.1,15.8,4.8z
+                  M6,11V5l5,3L6,11z"
+            ></path>
+          </svg>
+          YouTube
+        </button>
+        被国内限制访问的视频分享平台
+      </p>
+      <div class="player-container">
+        <!-- Plyr 播放器 -->
+        <video id="player" controls crossorigin>
+          <!-- 视频源 -->
+          <source src="王局受到习近平的表扬.mp4" type="video/mp4" />
+          <!-- 字幕 -->
+          <track kind="captions" label="英语" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt" default />
+          <track kind="captions" label="法语" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt" />
+          <!-- Fallback -->
+          <a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" download>Download</a>
+        </video>
+      </div>
+    </div>
+
+    <aside>
+      <p>
+        把YT-CN分享给同志，
+        <p id="shareBtn" style="color: rgb(0, 140, 255); text-decoration: underline;">分享</p>👍
+      </p>
+    </aside>
+
+    <!-- 引入 Plyr 脚本 -->
+    <script src="plyr.js"></script>
+    <script>
+      // 初始化 Plyr 播放器
+      const player = new Plyr('#player');
+    </script>
+    <script>
+        document.getElementById('shareBtn').addEventListener('click', async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: document.title,
+                        text: '简中油管（YT-CN） 是为应对youtube被国内限制访问的视频分享平台',
+                        url: window.location.href
+                    });
+                    console.log('页面分享成功');
+                } catch (err) {
+                    console.error('分享出错:', err);
+                }
+            } else {
+                alert('您的浏览器不支持 Web Share API。');
+            }
+        });
+    </script>
+  </body>
+</html>
